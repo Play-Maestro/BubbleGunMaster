@@ -14,10 +14,6 @@ public class FileReadWrite : MonoBehaviour
         LoadScores();
         gameScores.Sort();
         gameScores.Reverse();
-        foreach (int i in gameScores)
-        {
-            print(i);
-        }
     }
 
     public void AddScore(int score)
