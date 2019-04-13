@@ -7,6 +7,7 @@ public class Bubble : MonoBehaviour
     public GameObject blockPrefab;
     private BlockGrid grid;
     public GameObject popPrefab;
+    private bool hitSomething = false;
     
     // Start is called before the first frame update
     void Start()
@@ -22,7 +23,15 @@ public class Bubble : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.tag == "Doom")
+        if(hitSomething)
+        {
+            return;
+        }
+        else
+        {
+            hitSomething = true;
+        }
+        if (collision.gameObject.tag == "Doom")
         {
             Instantiate(popPrefab, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
@@ -49,6 +58,7 @@ public class Bubble : MonoBehaviour
         }
         else
         {
+            Instantiate(popPrefab, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
     }

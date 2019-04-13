@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     public AudioSource jumpAudio;
     Rigidbody2D rb;
     Camera mainCamera;
+    public PauseScreen pause;
 
     public SceneController sceneController;
     float movement = 0;
@@ -68,72 +69,75 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Reaload
-        if(shotTimer > 0)
+        if (!pause.getIsPaused())
         {
-            shotTimer -= Time.deltaTime;
-        }
-        if(shotTimer <= 0 && realoading)
-        {
-            selectedColor = Random.Range(0, bubArray.Length);
-            gunBubble = Instantiate(gunBubArray[selectedColor], gunPoint.position, Quaternion.identity, gunPoint);
-            realoading = false;
-        }
+            //Reaload
+            if (shotTimer > 0)
+            {
+                shotTimer -= Time.deltaTime;
+            }
+            if (shotTimer <= 0 && realoading)
+            {
+                selectedColor = Random.Range(0, bubArray.Length);
+                gunBubble = Instantiate(gunBubArray[selectedColor], gunPoint.position, Quaternion.identity, gunPoint);
+                realoading = false;
+            }
 
-        //Move the player
-        movement = Input.GetAxis("Horizontal");
-        transform.Translate(Vector3.right * movement * 0.1f);
+            //Move the player
+            movement = Input.GetAxis("Horizontal");
+            transform.Translate(Vector3.right * movement * 0.1f);
 
-        if(movement != 0)
-        {
-            animator.SetBool("Running", true);
+            if (movement != 0)
+            {
+                animator.SetBool("Running", true);
+            }
+            else
+            {
+                animator.SetBool("Running", false);
+            }
+
+            //Jump
+            if (Input.GetButtonDown("Jump") && groundSense.HasGroundToWalk() == true)
+            {
+                rb.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
+                animator.SetBool("Jump", true);
+                jumpAudio.Play();
+            }
+
+            animator.SetBool("Jump", !groundSense.HasGroundToWalk());
+
+            Vector3 mousePoint = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+
+            //Arm stuff
+            arm.transform.position = armAncor.position;
+            float AngleRad = Mathf.Atan2(mousePoint.y - arm.transform.position.y, mousePoint.x - arm.transform.position.x);
+            float AngleDeg = (180 / Mathf.PI) * AngleRad;
+            arm.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
+
+            Vector2 mouseDirection = (Vector2)(mousePoint - armAncor.position);
+            mouseDirection = mouseDirection.normalized;
+            if ((mousePoint - transform.position).x < 0)
+            {
+                sprites.transform.localScale = new Vector3(-1, 1, 1);
+                armSprite.transform.localScale = new Vector3(1, -1, 1);
+            }
+            else
+            {
+                sprites.transform.localScale = Vector3.one;
+                armSprite.transform.localScale = Vector3.one;
+            }
+            //Shooting
+            if (Input.GetButton("Fire1") && shotTimer <= 0)
+            {
+                shotTimer = 0.5f;
+                Destroy(gunBubble);
+                audio.Play();
+                GameObject myBub = Instantiate(bubArray[selectedColor], gunPoint.position, Quaternion.identity);
+                myBub.GetComponent<Rigidbody2D>().velocity = mouseDirection * shotVel;
+                realoading = true;
+            }
+
+            sceneController.SetPlayerPosition(transform.position.x);
         }
-        else
-        {
-            animator.SetBool("Running", false);
-        }
-
-        //Jump
-        if (Input.GetButtonDown("Jump") && groundSense.HasGroundToWalk() == true)
-        {
-            rb.AddForce(Vector2.up * jumpVel, ForceMode2D.Impulse);
-            animator.SetBool("Jump", true);
-            jumpAudio.Play();
-        }
-
-        animator.SetBool("Jump", !groundSense.HasGroundToWalk());
-
-        Vector3 mousePoint = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-
-        //Arm stuff
-        arm.transform.position = armAncor.position;
-        float AngleRad = Mathf.Atan2(mousePoint.y - arm.transform.position.y, mousePoint.x - arm.transform.position.x);
-        float AngleDeg = (180 / Mathf.PI) * AngleRad;
-        arm.transform.rotation = Quaternion.Euler(0, 0, AngleDeg);
-
-        Vector2 mouseDirection = (Vector2)(mousePoint - armAncor.position);
-        mouseDirection = mouseDirection.normalized;
-        if ((mousePoint - transform.position).x < 0)
-        {
-            sprites.transform.localScale = new Vector3(-1,1,1);
-            armSprite.transform.localScale = new Vector3(1, -1, 1);
-        }
-        else
-        {
-            sprites.transform.localScale = Vector3.one;
-            armSprite.transform.localScale = Vector3.one;
-        }
-         //Shooting
-        if (Input.GetButton("Fire1") && shotTimer <= 0)
-        {
-            shotTimer = 0.5f;
-            Destroy(gunBubble);
-            audio.Play();
-            GameObject myBub = Instantiate(bubArray[selectedColor], gunPoint.position, Quaternion.identity);
-            myBub.GetComponent<Rigidbody2D>().velocity = mouseDirection * shotVel;
-            realoading = true;
-        }
-
-        sceneController.SetPlayerPosition(transform.position.x);
     }
 }

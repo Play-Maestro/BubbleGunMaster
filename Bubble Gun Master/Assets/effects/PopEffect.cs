@@ -9,7 +9,7 @@ public class PopEffect : MonoBehaviour
     void Start()
     {
         audio = GetComponent<AudioSource>();
-        audio.pitch = Random.Range(-1f, 2f);
+        audio.pitch = Random.Range(-0.7f, 1.3f);
         audio.Play();
         Destroy(this.gameObject, 1f);
     }

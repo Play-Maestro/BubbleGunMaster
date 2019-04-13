@@ -146,13 +146,12 @@ public class BlockGrid : MonoBehaviour
         int posX = (int)pos.x;
         int posY = (int)pos.y;
         List<string> checkedList = new List<string>();
+        checkedList.Add(key);
         return IsRooted(key, posX, posY, checkedList);
     }
 
     private bool IsRooted(string key, int posX, int posY, List<string> checkedList)
     {
-        checkedList.Add(key);
-
         bool rooted = false;
         string[] adjacentKeys = new string[] {
             posX.ToString() + "x" + (posY + 1).ToString(),
@@ -168,6 +167,7 @@ public class BlockGrid : MonoBehaviour
             }
             else if (grid.ContainsKey(adjacentKeys[i]))
             {
+                checkedList.Add(adjacentKeys[i]);
                 if (grid[adjacentKeys[i]].myColor == Block.bColor.WALL)
                 {
                     return true;
