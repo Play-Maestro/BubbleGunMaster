@@ -10,9 +10,4 @@ public class CoinEffect : MonoBehaviour
         Destroy(this.gameObject, 1);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

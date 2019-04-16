@@ -11,11 +11,7 @@ public class ScrollWindow : MonoBehaviour
     private float distance = 0;
     public PauseScreen pause;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
 
     // Update is called once per frame
     void Update()

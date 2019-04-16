@@ -5,14 +5,7 @@ using UnityEngine;
 public class WallOfDoom : MonoBehaviour
 {
     public SceneController sceneController;
-    
 
-    private void Start()
-    {
-        
-    }
-
-    
 
     public void OnCollisionEnter2D(Collision2D collision)
     {

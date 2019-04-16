@@ -577,7 +577,7 @@ MonoBehaviour:
   wallOfDoom: {fileID: 2715148458882795157}
   player: {fileID: 1658951251}
   speed: 1
-  pause: {fileID: 0}
+  pause: {fileID: 913545745}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

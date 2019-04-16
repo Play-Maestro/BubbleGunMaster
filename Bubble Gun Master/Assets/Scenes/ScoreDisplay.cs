@@ -31,9 +31,4 @@ public class ScoreDisplay : MonoBehaviour
         scoreText.text = scoreString;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

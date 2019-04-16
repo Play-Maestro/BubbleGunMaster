@@ -4,19 +4,13 @@ using UnityEngine;
 
 public class PopEffect : MonoBehaviour
 {
-    private AudioSource audio;
+    private AudioSource popAudio;
     // Start is called before the first frame update
     void Start()
     {
-        audio = GetComponent<AudioSource>();
-        audio.pitch = Random.Range(-0.7f, 1.3f);
-        audio.Play();
+        popAudio = GetComponent<AudioSource>();
+        popAudio.pitch = Random.Range(-0.7f, 1.3f);
+        popAudio.Play();
         Destroy(this.gameObject, 1f);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

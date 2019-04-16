@@ -14,9 +14,4 @@ public class DisplayTitleScore : MonoBehaviour
         scoreText.text = ("High Score: " + fileIO.GetScores()[0].ToString());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

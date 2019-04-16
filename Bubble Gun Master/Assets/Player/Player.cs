@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     private GameObject[] gunBubArray = new GameObject[6];
     private bool realoading = false;
     private int selectedColor = 0;
-    private AudioSource audio;
+    private AudioSource playerAudio;
     public AudioSource jumpAudio;
     Rigidbody2D rb;
     Camera mainCamera;
@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
         selectedColor = Random.Range(0, bubArray.Length);
         gunBubble = Instantiate(gunBubArray[selectedColor], gunPoint.position, Quaternion.identity, gunPoint);
 
-        audio = GetComponent<AudioSource>();
+        playerAudio = GetComponent<AudioSource>();
     }
 
     public void AddCoin()
@@ -126,17 +126,19 @@ public class Player : MonoBehaviour
                 sprites.transform.localScale = Vector3.one;
                 armSprite.transform.localScale = Vector3.one;
             }
+
             //Shooting
             if (Input.GetButton("Fire1") && shotTimer <= 0)
             {
                 shotTimer = 0.5f;
                 Destroy(gunBubble);
-                audio.Play();
+                playerAudio.Play();
                 GameObject myBub = Instantiate(bubArray[selectedColor], gunPoint.position, Quaternion.identity);
                 myBub.GetComponent<Rigidbody2D>().velocity = mouseDirection * shotVel;
                 realoading = true;
             }
 
+            // Update the scene on the position of the player
             sceneController.SetPlayerPosition(transform.position.x);
         }
     }

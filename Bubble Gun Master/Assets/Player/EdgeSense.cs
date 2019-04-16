@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/*
+ * A general class to determine if there is ground in a location
+ */
+
 public class EdgeSense : MonoBehaviour {
 
 	private float groundTimer = 2;
 
 	private bool groundSensed;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+
 	
 	// Update is called once per frame
 	void Update () {
